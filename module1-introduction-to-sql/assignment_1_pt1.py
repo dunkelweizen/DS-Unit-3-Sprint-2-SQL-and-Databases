@@ -1,5 +1,4 @@
 import sqlite3
-#DB_FILEPATH = os.path.join(os.path.dirname(__file__), '..', "data", "rpg_db.sqlite3")
 
 conn = sqlite3.connect("rpg_db.sqlite3")
 # h/t: https://kite.com/python/examples/3884/sqlite3-use-a-row-factory-to-access-values-by-column-name
@@ -51,7 +50,9 @@ SELECT
 character_id,
 COUNT(item_id)
 FROM
-    (charactercreator_character_inventory JOIN armory_weapon ON charactercreator_character_inventory.item_id = armory_weapon.item_ptr_id)
+    (charactercreator_character_inventory 
+    JOIN armory_weapon ON charactercreator_character_inventory.item_id 
+    = armory_weapon.item_ptr_id)
 GROUP BY
     character_id
 LIMIT
