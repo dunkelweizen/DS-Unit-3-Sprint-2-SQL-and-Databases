@@ -61,3 +61,31 @@ results = curs.execute(query).fetchall()
 for i in range(len(results)):
     print('Character ID', results[i][0], 'has', results[i][1], 'weapons')
 
+query = """
+SELECT COUNT(item_id) 
+FROM charactercreator_character_inventory
+GROUP BY character_id;"""
+
+results = curs.execute(query).fetchall()
+items = 0
+for i in range(len(results)):
+    items += results[i][0]
+average = items / len(results)
+print('Average items per character is', average)
+
+query = """
+SELECT
+COUNT(item_id)
+FROM
+    (charactercreator_character_inventory 
+    JOIN armory_weapon ON charactercreator_character_inventory.item_id 
+    = armory_weapon.item_ptr_id)
+GROUP BY
+    character_id
+"""
+results = curs.execute(query).fetchall()
+weapons = 0
+for i in range(len(results)):
+    weapons += results[i][0]
+average_weapons = weapons / len(results)
+print('Average weapons per character who has weapons is:', average_weapons)
