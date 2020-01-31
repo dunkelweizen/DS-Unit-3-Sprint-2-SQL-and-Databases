@@ -6,7 +6,7 @@ import sqlite3
 import psycopg2
 from psycopg2.extras import execute_values
 
-load_dotenv() # looks inside the .env file for some env vars
+load_dotenv()  # looks inside the .env file for some env vars
 
 # passes env var values to python var
 DB_HOST = os.getenv("DB_HOST", default="OOPS")
@@ -15,6 +15,7 @@ DB_USER = os.getenv("DB_USER", default="OOPS")
 DB_PASSWORD = os.getenv("DB_PASSWORD", default="OOPS")
 
 DB_FILEPATH = "rpg_db.sqlite3"
+
 
 class StorageService():
     def __init__(self):
@@ -51,8 +52,31 @@ class StorageService():
         execute_values(self.pg_cursor, insertion_query, list_of_tuples)
         self.pg_connection.commit()
 
-if __name__ == "__main__":
+    def get_armory_items(self):
+        return self.sqlite_connection.execute("SELECT * FROM armory_item;").fetchall()
 
+    def create_armory_items_table(self):
+        create_query = """
+        DROP TABLE IF EXISTS armory_item; -- allows this to be run idempotently, avoids psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "characters_pkey" DETAIL:  Key (character_id)=(1) already exists.
+        CREATE TABLE IF NOT EXISTS armory_item (
+            item_id SERIAL PRIMARY KEY,
+            name VARCHAR(30),
+            value INT,
+            weight INT
+        );
+        """
+        print(create_query)
+        self.pg_cursor.execute(create_query)
+        self.pg_connection.commit()
+
+    def insert_armory_items_table(self, armory_items):
+        insertion_query = "INSERT INTO armory_item (item_id, name, value, weight) VALUES %s"
+        list_of_tuples = armory_items
+        execute_values(self.pg_cursor, insertion_query, list_of_tuples)
+        self.pg_connection.commit()
+
+
+if __name__ == "__main__":
     service = StorageService()
 
     #
@@ -70,3 +94,7 @@ if __name__ == "__main__":
     service.create_characters_table()
 
     service.insert_characters(characters)
+
+    armory_items = service.get_armory_items()
+    service.create_armory_items_table()
+    service.insert_armory_items_table(armory_items)
