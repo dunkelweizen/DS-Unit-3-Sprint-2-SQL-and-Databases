@@ -14,7 +14,7 @@ DB_NAME = os.getenv("DB_NAME", default="OOPS")
 DB_USER = os.getenv("DB_USER", default="OOPS")
 DB_PASSWORD = os.getenv("DB_PASSWORD", default="OOPS")
 
-DB_FILEPATH = os.path.join(os.path.dirname(__file__), "..", "data", "rpg_db.sqlite3")
+DB_FILEPATH = "rpg_db.sqlite3"
 
 class StorageService():
     def __init__(self):
