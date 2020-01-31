@@ -16,6 +16,7 @@ for character_class in subclass:
     results = curs.execute(query).fetchall()
     print(f'Characters in class {character_class[17:]}:', results[0]['COUNT(character_ptr_id)'])
 
+
 query = "SELECT COUNT(mage_ptr_id) FROM charactercreator_necromancer"
 
 results = curs.execute(query).fetchall()

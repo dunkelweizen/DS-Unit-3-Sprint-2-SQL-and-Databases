@@ -20,11 +20,13 @@ AND Shopping >= 100;
 """
 
 results = curs.execute(query).fetchall()
-print('There are', results[0][0], 'users who rated both Nature and Shopping over 100')
+print('There are', results[0][0], 'users with more than 100 Nature and Shopping reviews')
 
 
 categories = ['Sports', 'Religious', 'Nature', 'Theatre', 'Shopping', 'Picnic']
+query = "SELECT * FROM review"
+length = len(curs.execute(query).fetchall())
 for item in categories:
     query = f"SELECT SUM({item}) FROM review"
     results = curs.execute(query).fetchall()
-    print(f'Average number of reviews for {item} column:', round(results[0][0] / 249))
+    print(f'Average number of reviews for {item} column:', round(results[0][0] / length))
