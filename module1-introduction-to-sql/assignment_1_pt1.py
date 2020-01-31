@@ -84,8 +84,10 @@ GROUP BY
     character_id
 """
 results = curs.execute(query).fetchall()
+query = "SELECT * FROM charactercreator_character"
+length = len(curs.execute(query).fetchall())
 weapons = 0
 for i in range(len(results)):
     weapons += results[i][0]
-average_weapons = weapons / len(results)
-print('Average weapons per character who has weapons is:', average_weapons)
+average_weapons = weapons / length
+print('Average weapons per character:', average_weapons)
