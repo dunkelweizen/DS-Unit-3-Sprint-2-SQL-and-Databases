@@ -102,3 +102,4 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+Easy_sql_output.ipynb
