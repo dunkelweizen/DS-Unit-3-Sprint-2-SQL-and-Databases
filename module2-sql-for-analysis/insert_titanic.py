@@ -9,7 +9,7 @@ from psycopg2.extras import execute_values
 data = pd.read_csv('titanic.csv')
 
 conn = sqlite3.connect("titanic.sqlite3")
-data.to_sql('passengers', conn, if_exists='replace')
+data.to_sql('titanic', conn, if_exists='replace')
 curs = conn.cursor()
 
 load_dotenv()  # looks inside the .env file for some env vars
@@ -31,32 +31,33 @@ class StorageService():
         self.pg_cursor = self.pg_connection.cursor()
 
     def get_passengers(self):
-        return self.sqlite_connection.execute("SELECT * FROM passengers;").fetchall()
+        return self.sqlite_connection.execute("SELECT * FROM titanic;").fetchall()
 
     def create_passengers_table(self):
         create_query = """
-        DROP TABLE IF EXISTS passengers; -- allows this to be run idempotently, avoids psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "characters_pkey" DETAIL:  Key (character_id)=(1) already exists.
-        CREATE TABLE IF NOT EXISTS passengers (
+        DROP TABLE IF EXISTS titanic;
+        CREATE TABLE IF NOT EXISTS titanic (
             index SERIAL PRIMARY KEY,
-            Survived INT,
+            Survived INT, -- wanted as BOOL but couldn't get to convert in script, used PostgreSQL browser window instead
             Pclass INT,
             Name VARCHAR(255),
             Sex VARCHAR(6),
             Age INT,
             SiblingsSpousesAboard INT,
             ParentsChildrenAboard INT,
-            Fare REAL
+            Fare MONEY
         );
         """
-        print(create_query)
+        self.sqlite_cursor.execute(create_query)
         self.pg_cursor.execute(create_query)
         self.pg_connection.commit()
 
     def insert_passengers(self, passengers):
-        insertion_query = "INSERT INTO passengers (index, Survived, Pclass, Name, " \
+        insertion_query = "INSERT INTO titanic (index, Survived, Pclass, Name, " \
                           "Sex, Age, SiblingsSpousesAboard, ParentsChildrenAboard, Fare) VALUES %s"
         list_of_tuples = passengers
         execute_values(self.pg_cursor, insertion_query, list_of_tuples)
+        execute_values(self.sqlite_cursor, insertion_query, list_of_tuples)
         self.pg_connection.commit()
 
 
