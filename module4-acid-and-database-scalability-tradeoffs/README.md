@@ -43,19 +43,20 @@ queries](https://docs.mongodb.com/manual/tutorial/query-documents/) to answer
 the same questions as you did from the first module (when the RPG data was in
 SQLite). With PostgreSQL, answer the following:
 
-- How many passengers survived, and how many died?
-- How many passengers were in each class?
-- How many passengers survived/died within each class?
-- What was the average age of survivors vs nonsurvivors?
-- What was the average age of each passenger class?
-- What was the average fare by passenger class? By survival?
-- How many siblings/spouses aboard on average, by passenger class? By survival?
-- How many parents/children aboard on average, by passenger class? By survival?
-- Do any passengers have the same name?
+- How many passengers survived, and how many died?  Survived = 342, Died = 545
+- How many passengers were in each class? 1 - 216, 2 - 184, 3 - 487
+- How many passengers survived/died within each class? 1 Survived = 136, 1 Died = 80, 2 Survived = 87, 2 Died = 97, 3 Survived = 119, 3 Died = 368
+- What was the average age of survivors vs nonsurvivors? Survived avg = 28.4 years, Died avg = 30.1 years
+- What was the average age of each passenger class? 1 - 38.8 years, 2 - 25.2 years, 3 - 29.9 years
+- What was the average fare by passenger class? By survival? Avg 1st Fare = $84.15, Avg 2nd Fare = $20.66, Avg 3rd Fare = $13.71; Survived average = $48.40, Died average = $22.21
+- How many siblings/spouses aboard on average, by passenger class? By survival? 1st Class = 0.41, 2nd Class = 0.40, 3rd Class = 0.62; Survived = 0.47, Died = 0.56
+- How many parents/children aboard on average, by passenger class? By survival? 1st Class = 0.356, 2nd Class = 0.380, 3rd Class = 0.396; Survived = 0.465, Died = 0.332
+- Do any passengers have the same name? No passengers with exact same name
 - (Bonus! Hard, may require pulling and processing with Python) How many married
   couples were aboard the Titanic? Assume that two people (one `Mr.` and one
   `Mrs.`) with the same last name and with at least 1 sibling/spouse aboard are
   a married couple.
+  
 
 ## Resources and Stretch Goals
 
